@@ -45,7 +45,11 @@ Add these two secrets:
 ---
 
 ## ⏰ Schedule
-Runs automatically every day at **8:00 AM IST** (2:30 UTC).
+Runs automatically at the following times (IST):
+- **8:00 AM**
+- **1:00 PM**
+- **4:30 PM**
+- **10:00 PM**
 
 ## 📅 Topic Rotation
 Rotates daily through Interview Preparation topics:

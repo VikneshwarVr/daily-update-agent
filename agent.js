@@ -9,25 +9,25 @@ if (!GROQ_API_KEY || !NTFY_TOPIC) {
 
 // ── Topics rotate based on day of year ──────────────────────────────────────
 const topics = [
-  "Java Interview Concepts (core java, multithreading, collections, JVM internals, Spring Boot)",
-  "System Design, LLD & HLD Interview Prep (scalability, microservices, database design, design patterns)",
-  "Artificial Intelligence Interview Prep (prompt engineering, RAG, real-world use cases, basic ML concepts)",
-  "Machine Learning Interview Prep (algorithms, model training, evaluation metrics, feature engineering)",
+  "Mid-Level Java Interview Concepts (JVM tuning, GC algorithms, Concurrency utilities like CountDownLatch, Spring Boot internals, Hibernate N+1)",
+  "System Design, LLD & HLD (designing scalable REST APIs, caching strategies, message queues like Kafka, database indexing, design patterns)",
+  "Database & Cloud Concepts (SQL query optimization, NoSQL vs SQL, transaction isolation levels, Docker basics, CI/CD pipelines)",
+  "Problem Solving & Architecture (Clean Architecture, SOLID principles, testing Strategies like TDD and Mockito, handling distributed transactions)",
 ];
 
-const dayOfYear = Math.floor(
-  (new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000
-);
-const topic = topics[dayOfYear % topics.length];
+// Pick topic based on hours since Epoch so that it rotates correctly when running multiple times a day
+const hourOfEpoch = Math.floor(Date.now() / (1000 * 60 * 60));
+const topic = topics[hourOfEpoch % topics.length];
 
 async function generateArticle(topic) {
   const prompt = `Write a short, engaging daily interview preparation bite about: ${topic}
 
 Requirements:
+- Target audience: A Java Software Engineer with 3 years of experience. Do not ask beginner questions.
 - Keep it under 200 words (mobile notification friendly)
 - Start with a catchy title using an emoji on the very first line
-- Present 1 common interview question or key concept related to the topic
-- Explain the answer/concept clearly and concisely
+- Present 1 common mid-level interview question or key concept related to the topic
+- Explain the answer/concept clearly and concisely, highlighting real-world trade-offs or scalability
 - Add a practical example if relevant
 - End with a "Quick Tip" for interviews
 - ABSOLUTELY NO MARKDOWN FORMATTING (no asterisks, no backticks, no bold text). Mobile push notifications cannot format markdown. Use plain text only.

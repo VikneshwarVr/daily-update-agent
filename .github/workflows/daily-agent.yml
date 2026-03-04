@@ -2,7 +2,14 @@ name: Daily Learning Notification
 
 on:
   schedule:
-    - cron: '30 2 * * *'  # 2:30 UTC = 8:00 AM IST every day
+    # 8:00 AM IST -> 2:30 UTC
+    - cron: '30 2 * * *'
+    # 1:00 PM IST -> 7:30 UTC
+    - cron: '30 7 * * *'
+    # 4:30 PM IST -> 11:00 UTC
+    - cron: '0 11 * * *'
+    # 10:00 PM IST -> 16:30 UTC
+    - cron: '30 16 * * *'
   workflow_dispatch:        # allows manual trigger from GitHub UI anytime
 
 jobs:
