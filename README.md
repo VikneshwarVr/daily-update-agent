@@ -26,12 +26,12 @@ Add these two secrets:
 
 | Name | Value |
 |---|---|
-| `GEMINI_API_KEY` | Your key from aistudio.google.com |
+| `GROQ_API_KEY` | Your key from console.groq.com |
 | `NTFY_TOPIC` | Your unique topic e.g. `yourname-learn-x7k2` |
 
-### 3. Get free Gemini API key
-- Go to https://aistudio.google.com
-- Click **Get API Key** → Create → Copy it
+### 3. Get free Groq API key
+- Go to https://console.groq.com/keys
+- Sign up and click **Create API Key** → Copy it
 
 ### 4. Subscribe on your phone
 - Download **ntfy** app (Android / iPhone)

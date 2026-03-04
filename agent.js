@@ -1,9 +1,9 @@
 // ── Keys come from GitHub Secrets (environment variables) ───────────────────
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const NTFY_TOPIC     = process.env.NTFY_TOPIC;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const NTFY_TOPIC = process.env.NTFY_TOPIC;
 
-if (!GEMINI_API_KEY || !NTFY_TOPIC) {
-  console.error("❌ Missing GEMINI_API_KEY or NTFY_TOPIC environment variables");
+if (!GROQ_API_KEY || !NTFY_TOPIC) {
+  console.error("❌ Missing GROQ_API_KEY or NTFY_TOPIC environment variables");
   process.exit(1);
 }
 
@@ -24,21 +24,26 @@ async function generateArticle(topic) {
   const prompt = `Write a short, engaging daily interview preparation bite about: ${topic}
 
 Requirements:
-- Keep it under 300 words (mobile notification friendly)
-- Start with a catchy title using an emoji
+- Keep it under 200 words (mobile notification friendly)
+- Start with a catchy title using an emoji on the very first line
 - Present 1 common interview question or key concept related to the topic
 - Explain the answer/concept clearly and concisely
-- Add a code snippet, diagram description, or practical example if relevant
+- Add a practical example if relevant
 - End with a "Quick Tip" for interviews
+- ABSOLUTELY NO MARKDOWN FORMATTING (no asterisks, no backticks, no bold text). Mobile push notifications cannot format markdown. Use plain text only.
 - Friendly, conversational professional tone.`;
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+    "https://api.groq.com/openai/v1/chat/completions",
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Authorization": `Bearer ${GROQ_API_KEY} `,
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
+        model: "llama-3.1-8b-instant",
+        messages: [{ role: "user", content: prompt }],
       }),
     }
   );
@@ -46,10 +51,10 @@ Requirements:
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.error?.message || "Gemini API error");
+    throw new Error(data.error?.message || "Groq API error");
   }
 
-  return data.candidates[0].content.parts[0].text;
+  return data.choices[0].message.content;
 }
 
 async function sendNotification(article) {
@@ -57,11 +62,14 @@ async function sendNotification(article) {
   const title = lines[0].replace(/[#*]/g, "").trim();
   const body = lines.slice(1).join("\n").trim();
 
+  // Encode title for HTTP headers to support emojis
+  const encodedTitle = encodeURIComponent(title);
+
   const response = await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
     method: "POST",
     headers: {
-      "Content-Type": "text/plain",
-      Title: title,
+      "Content-Type": "text/plain; charset=utf-8",
+      Title: `=?UTF-8?B?${Buffer.from(title).toString('base64')}?=`,
       Priority: "default",
       Tags: "books,brain",
     },
