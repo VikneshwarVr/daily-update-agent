@@ -48,11 +48,11 @@ Add these two secrets:
 Runs automatically every day at **8:00 AM IST** (2:30 UTC).
 
 ## 📅 Topic Rotation
-Rotates daily through:
-1. ☕ Java
-2. 🤖 AI / LLMs
-3. 🧠 Machine Learning
-4. 🚀 New Tech Updates
+Rotates daily through Interview Preparation topics:
+1. ☕ Java Concepts
+2. 🏗️ System Design (LLD & HLD)
+3. 🤖 AI Interview Prep
+4. 🧠 Machine Learning
 
 ---
 

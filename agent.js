@@ -9,10 +9,10 @@ if (!GEMINI_API_KEY || !NTFY_TOPIC) {
 
 // ── Topics rotate based on day of year ──────────────────────────────────────
 const topics = [
-  "Java (latest features, best practices, JVM internals, Spring Boot tips)",
-  "Artificial Intelligence & LLMs (prompt engineering, RAG, fine-tuning, new models)",
-  "Machine Learning (algorithms, model training, evaluation, real-world use cases)",
-  "New Tech Updates (latest in cloud, devtools, frameworks, industry news)",
+  "Java Interview Concepts (core java, multithreading, collections, JVM internals, Spring Boot)",
+  "System Design, LLD & HLD Interview Prep (scalability, microservices, database design, design patterns)",
+  "Artificial Intelligence Interview Prep (prompt engineering, RAG, real-world use cases, basic ML concepts)",
+  "Machine Learning Interview Prep (algorithms, model training, evaluation metrics, feature engineering)",
 ];
 
 const dayOfYear = Math.floor(
@@ -21,15 +21,16 @@ const dayOfYear = Math.floor(
 const topic = topics[dayOfYear % topics.length];
 
 async function generateArticle(topic) {
-  const prompt = `Write a short, engaging daily learning article about: ${topic}
+  const prompt = `Write a short, engaging daily interview preparation bite about: ${topic}
 
 Requirements:
 - Keep it under 300 words (mobile notification friendly)
 - Start with a catchy title using an emoji
-- Include 1 key concept explained simply
-- Add 1 practical tip or code snippet if relevant
-- End with a "Today's Takeaway" one-liner
-- Friendly, conversational tone — like a daily newsletter, not a textbook.`;
+- Present 1 common interview question or key concept related to the topic
+- Explain the answer/concept clearly and concisely
+- Add a code snippet, diagram description, or practical example if relevant
+- End with a "Quick Tip" for interviews
+- Friendly, conversational professional tone.`;
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
