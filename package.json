@@ -1,0 +1,10 @@
+{
+  "name": "daily-learning-agent",
+  "version": "1.0.0",
+  "description": "Daily learning notifications via Gemini + ntfy.sh, scheduled by GitHub Actions",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node agent.js"
+  },
+  "dependencies": {}
+}

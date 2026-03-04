@@ -1,0 +1,25 @@
+name: Daily Learning Notification
+
+on:
+  schedule:
+    - cron: '30 2 * * *'  # 2:30 UTC = 8:00 AM IST every day
+  workflow_dispatch:        # allows manual trigger from GitHub UI anytime
+
+jobs:
+  send-article:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run agent
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: node agent.js
